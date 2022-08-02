@@ -1,14 +1,13 @@
 //Variables 
 const formulario = document.querySelector('#formulario');
+const listaTweet = document.querySelector('#lista-tweets');
 let tweets = [];
-
+mostrarTweets();
 evensstListenner();
 
 function evensstListenner() {
     formulario.addEventListener('submit', addComent);
 }
-
-
 
 function addComent(event) {
     event.preventDefault();
@@ -16,10 +15,10 @@ function addComent(event) {
     if (tweet !== '') {
         tweets.push(tweet);
         //tweets = [...tweets,tweet]
-        console.log(tweets);
+        //console.log(tweets);
         formulario.reset();
-        //localStorage.setItem('array',tweets);
-
+        localStorage.setItem('array',tweets);
+        
     } else {
         mensajeError('Por favor ingresa un tweet');
         const error2 = document.querySelector('p.error');
@@ -27,7 +26,31 @@ function addComent(event) {
             error2.remove();
         }, 2000)
     }
+    mostrarTweets();
 }
+
+function mostrarTweets(){
+    limpiarHtml();
+    let local = localStorage.getItem('array');
+    let newArray = local.split(',');
+    //console.log(prueba);
+    newArray.forEach(tweet => {
+        const menTweet = document.createElement('p');
+        menTweet.textContent = tweet;
+        listaTweet.appendChild(menTweet);
+        //console.log(tweet);
+        
+    });
+}
+
+function limpiarHtml(){
+    //contenedor.innerHTML = '';
+   /*  limpiando de una mejor manera el HTML */
+    while(listaTweet.firstChild){
+        listaTweet.removeChild(listaTweet.firstChild);
+    }
+}
+
 
 function mensajeError(mensaje) {
     const menError = document.createElement('p');
